@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	
+	private static Scene mainScene;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -17,13 +20,18 @@ public class Main extends Application {
 			scrollPane.setFitToHeight(true);// deixa a scrollPane na altura do palco
 			scrollPane.setFitToWidth(true);// deixa a scrollPane na altura do palco
 			
-			Scene mainScene = new Scene(scrollPane);// Carrega o objeto Scene com o objeto principal
+			mainScene = new Scene(scrollPane);// Carrega o objeto Scene com o objeto principal
 			primaryStage.setScene(mainScene);// setando o palco da scena com a mainScene
 			primaryStage.setTitle("Sample JavaFX application");// setando o titulo do palco
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// pegando a referencia da scena principal
+	public static Scene getMainScene() { 
+		return mainScene;
 	}
 	
 	public static void main(String[] args) {
