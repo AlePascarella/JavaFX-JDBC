@@ -2,7 +2,6 @@ package application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
@@ -16,7 +15,7 @@ public class Main extends Application {
 			ScrollPane scrollPane = loader.load(); //Carrega a view
 			
 			scrollPane.setFitToHeight(true);// deixa a scrollPane na altura do palco
-			scrollPane.setFitToWidth(true);// deixa a scrollPane na largura do palco
+			scrollPane.setFitToWidth(true);// deixa a scrollPane na altura do palco
 			
 			Scene mainScene = new Scene(scrollPane);// Carrega o objeto Scene com o objeto principal
 			primaryStage.setScene(mainScene);// setando o palco da scena com a mainScene
