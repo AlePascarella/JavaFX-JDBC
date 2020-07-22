@@ -7,6 +7,8 @@ import model.entities.Department;
 
 public class DepartmentService {
 
+	
+	// Retornar uma lista de departamentos
 	public List<Department> findAll () {
 		List<Department> list = new ArrayList<>();
 		list.add(new Department(1, "Books"));

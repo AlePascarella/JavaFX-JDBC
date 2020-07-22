@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
@@ -33,14 +34,25 @@ public class MainViewController implements Initializable {
 		System.out.println("onMenuItemSellerAction");
 	}
 	
+	// jeito longo
+	/*
 	@FXML
 	public void onMenuItemDepartmentAction() {
 		loadView2("/gui/DepartmentList.fxml");
+	}*/
+	
+	// jeito curto
+	@FXML
+	public void onMenuItemDepartmentAction() {
+		loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
+			controller.setDepartmentService(new DepartmentService());
+			controller.updateTableView(); // precisamos acresentar a declaraçao do parametro lambida na funcao loadview vazio ou com declaraçao 
+		});
 	}
 	
 	@FXML
 	public void onMenuItemAboutAction() {
-		loadView("/gui/About.fxml");
+		loadView("/gui/About.fxml", X -> {});
 	}
 
 	@Override
@@ -48,7 +60,7 @@ public class MainViewController implements Initializable {
 		
 	}
 
-	private void loadView(String absoluteName) { // funcao para abir outra tela
+	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) { // funcao para abir outra tela
 		try {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // Carregar a tela
 		VBox newVBox = loader.load(); // criando objeto VBox
@@ -70,12 +82,17 @@ public class MainViewController implements Initializable {
 		
 		//.addAll adicionando uma colecao
 		
+		// comando para ativar a funcao que colocar no lugar do initializingAction
+		T controller = loader.getController();
+		initializingAction.accept(controller);
 		}
 		catch(IOException e) {
 			Alerts.showAlert("IOExeption", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
-	
+	// Jeito mais longo para abrir outra tela
+	// em vez de repitir a funcao uso a mesma criada e faço algumas alteracoes, passar a inicializaçao para o parametro loadview
+	/*
 	private void loadView2(String absoluteName) { // funcao para abir outra tela
 		try {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // Carregar a tela
@@ -96,15 +113,16 @@ public class MainViewController implements Initializable {
 		mainVBox.getChildren().add(mainMenu); // Adicionando todos os filhos do mainVbox
 		mainVBox.getChildren().addAll(newVBox.getChildren()); // Adicionando todos os filhos do Vbox que queremos abrir
 		
-		
-		DepartmentListController controller = loader.getController();
-		controller.setDepartmentService(new DepartmentService());
-		controller.updateTableView();
+		//
+		// inicializador, diferenca do outro loadview 
+		DepartmentListController controller = loader.getController(); // serve para carregar a view ou acessar no controller 
+		controller.setDepartmentService(new DepartmentService()); // Injetando a dependecia do controller
+		controller.updateTableView(); // atualizar os dados na tela tableview
 		//.addAll adicionando uma colecao
 		
 		}
 		catch(IOException e) {
 			Alerts.showAlert("IOExeption", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
-	}
+	}*/
 }
